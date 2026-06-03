@@ -1,0 +1,7 @@
+Enterprise RAG platforms help organizations answer questions from trusted internal documents. A production platform should include document ingestion, chunking, embeddings, vector search, answer generation, citations, evaluation, feedback, and analytics.
+
+Admins are responsible for uploading documents, selecting chunking strategies, managing users, reviewing audit logs, monitoring usage, and tracking answer quality. Users ask questions and provide feedback on answer helpfulness.
+
+Security controls include role-based access control, rate limiting, input validation, prompt injection detection, sensitive data masking, environment-based API key protection, and audit logging. These controls reduce the risk of data leakage and unsafe model behavior.
+
+Evaluation metrics include relevance, faithfulness, hallucination rate, latency, estimated cost per request, and user feedback score. RAGAS-style evaluation helps teams understand whether answers are grounded in retrieved context.

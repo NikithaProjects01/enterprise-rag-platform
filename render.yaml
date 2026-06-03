@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: enterprise-rag-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./rag_platform.db
+      - key: RATE_LIMIT_PER_MINUTE
+        value: 30
+      - key: FRONTEND_ORIGINS
+        value: http://localhost:5173
