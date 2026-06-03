@@ -6,6 +6,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from io import BytesIO
 
+from .config import settings
 from .database import Base, engine, get_db
 from .models import AuditLog, Chunk, Document, Feedback, QueryLog, User
 from .rag import answer_question, chunk_text
