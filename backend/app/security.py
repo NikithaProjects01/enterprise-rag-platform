@@ -69,11 +69,22 @@ def mask_sensitive(text: str) -> str:
 
 
 async def rate_limit(request: Request):
-    key = request.client.host if request.client else "unknown"
+    if request.method in {"OPTIONS", "HEAD"} or request.url.path == "/health":
+        return
+
+    forwarded_for = request.headers.get("x-forwarded-for")
+    key = forwarded_for.split(",", 1)[0].strip() if forwarded_for else None
+    if not key:
+        key = request.client.host if request.client else "unknown"
+
     now = datetime.utcnow()
     bucket = [t for t in rate_buckets.get(key, []) if now - t < timedelta(minutes=1)]
     if len(bucket) >= settings.rate_limit_per_minute:
-        raise HTTPException(status_code=429, detail="Rate limit exceeded")
+        raise HTTPException(
+            status_code=429,
+            detail="Rate limit exceeded",
+            headers={"Retry-After": "60"},
+        )
     bucket.append(now)
     rate_buckets[key] = bucket
 

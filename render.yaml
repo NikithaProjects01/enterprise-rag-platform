@@ -13,6 +13,6 @@ services:
       - key: DATABASE_URL
         value: sqlite:///./rag_platform.db
       - key: RATE_LIMIT_PER_MINUTE
-        value: 30
+        value: 120
       - key: FRONTEND_ORIGINS
-        value: http://localhost:5173
+        value: http://localhost:5173,http://127.0.0.1:5173,https://enterprise-rag-platform-coral.vercel.app
