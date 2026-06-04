@@ -3,7 +3,11 @@ import { createRoot } from "react-dom/client";
 import { Activity, Database, Eye, EyeOff, FileText, KeyRound, Lock, MessageSquare, Shield, Trash2, Upload, Users } from "lucide-react";
 import "./styles.css";
 
-const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
+const API =
+  import.meta.env.VITE_API_URL ||
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:8001"
+    : "https://enterprise-rag-platform-1.onrender.com");
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -20,10 +24,15 @@ function App() {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   async function api(path, options = {}) {
-    const response = await fetch(`${API}${path}`, {
-      ...options,
-      headers: { ...headers, ...(options.headers || {}) },
-    });
+    let response;
+    try {
+      response = await fetch(`${API}${path}`, {
+        ...options,
+        headers: { ...headers, ...(options.headers || {}) },
+      });
+    } catch {
+      throw new Error(`Could not reach API at ${API}. Check the backend deployment and CORS settings.`);
+    }
     if (!response.ok) throw new Error((await response.json()).detail || "Request failed");
     return response.json();
   }
